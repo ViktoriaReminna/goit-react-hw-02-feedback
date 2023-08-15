@@ -14,9 +14,20 @@ export class App extends Component {
       };
     });
   };
+  countTotalFeedback = () => {
+    const { good, neutral, bad } = this.state;
+    return good + neutral + bad;
+  };
+  countPositiveFeedbackPercentage = () => {
+    const { good } = this.state;
+    const total = this.countTotalFeedback();
+    return total === 0 ? 0 : (good / total) * 100;
+  };
+
   render() {
     const { good, neutral, bad } = this.state;
-
+    const totalFeedback = this.countTotalFeedback();
+    const positiveFeedbackPercentage = this.countPositiveFeedbackPercentage();
     return (
       <div>
         <p>Please leave feedback</p>
@@ -24,6 +35,8 @@ export class App extends Component {
         <button onClick={() => this.handleX('neutral')}>Neutral</button>
         <button onClick={() => this.handleX('bad')}>Bad</button>
         <Statistics good={good} neutral={neutral} bad={bad} />
+        <p>Total feedback: {totalFeedback}</p>
+        <p>Positive feedback: {positiveFeedbackPercentage.toFixed(2)}%</p>
       </div>
     );
   }
